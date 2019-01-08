@@ -20,6 +20,7 @@ service: secrets-host
 provider:
   name: aws
   runtime: nodejs8.10
+  timeout: 10
   iamRoleStatements:
     - Effect: "Allow"
       Action:
