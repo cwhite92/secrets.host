@@ -26,17 +26,58 @@
         <h2 class="text-grey-lightest font-light mb-10 text-sm">Secure secrets exchange with public and private keys</h2>
 
         <div style="max-width: 800px;" class="mx-auto">
-            <form>
-                <textarea class="block outline-none w-full border p-4 font-mono"
-                          style="border-color: #414667; background-color: #1D202F; height: 300px; color: #B2B3BA;"
-                          placeholder="Paste your public key here"
-                ></textarea>
-                <input type="submit"
-                       value="Generate unique URL"
-                       class="p-4 mt-4 w-full border outline-none cursor-pointer"
-                       style="border-color: #414667; background-color: #1D202F; color: #B2B3BA;">
-            </form>
+            <div id="step1">
+                <form id="public-key-form" method="post">
+                    <textarea id="public-key"
+                              class="block outline-none w-full border p-4 font-mono"
+                              style="border-color: #414667; background-color: #1D202F; height: 300px; color: #B2B3BA;"
+                              placeholder="Paste your public key here"
+                    ></textarea>
+                    <input id="submit-button"
+                           type="submit"
+                           value="Generate unique URL"
+                           class="p-4 mt-4 w-full border outline-none cursor-pointer"
+                           style="border-color: #414667; background-color: #1D202F; color: #B2B3BA;">
+                </form>
+            </div>
+            <div id="step2" class="hidden">
+                <p>Share the below URL with whomever wants to tell you their secrets.</p>
+                <input id="unique-url" type="text" class="w-full p-4 mt-4 border outline-none" style="border-color: #414667; background-color: #1D202F; color: #B2B3BA;">
+            </div>
         </div>
     </div>
+
+    <script>
+        let step1 = document.getElementById('step1');
+        let step2 = document.getElementById('step2');
+        let form = document.getElementById('public-key-form');
+        let submitButton = document.getElementById('submit-button');
+        let uniqueUrlBox = document.getElementById('unique-url');
+
+        form.addEventListener('submit', function (event) {
+            event.preventDefault();
+
+            let textarea = document.getElementById('public-key');
+            let publicKey = textarea.value;
+
+            textarea.disabled = true;
+            submitButton.disabled = true;
+            submitButton.value = 'Generating unique URL...';
+
+            fetch('/dev/links', {
+                method: 'POST',
+                body: JSON.stringify({
+                    public_key: publicKey
+                })
+            }).then(function(response) {
+                return response.json();
+            }).then(function(link) {
+                step1.style.display = 'none';
+                step2.style.display = 'block';
+
+                uniqueUrlBox.value = 'https://secrets.host/' + link.uuid;
+            });
+        });
+    </script>
 </body>
 </html>
