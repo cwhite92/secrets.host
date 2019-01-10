@@ -4,8 +4,17 @@ const app = express();
 const uuidv4 = require('uuid/v4');
 const AWS = require('aws-sdk');
 const s3 = new AWS.S3();
+const nunjucks = require('nunjucks');
 
 app.use(express.json());
+nunjucks.configure('templates', {
+    autoescape: true,
+    express: app
+});
+
+app.get('/', function (req, res) {
+    res.render('index.html');
+});
 
 app.post('/links', function (req, res) {
     // TODO: ensure public key is valid
