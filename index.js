@@ -13,10 +13,16 @@ nunjucks.configure('templates', {
 });
 
 app.get('/', function (req, res) {
-    res.render('index.html');
+    res.render('home.html');
 });
 
-app.post('/links', function (req, res) {
+app.get('/:uuid', function (req, res) {
+    const uuid = req.params.uuid;
+
+    res.render('link.html', {uuid: uuid});
+});
+
+app.post('/api/links', function (req, res) {
     // TODO: ensure public key is valid
 
     const uuid = uuidv4();
@@ -37,7 +43,7 @@ app.post('/links', function (req, res) {
     });
 });
 
-app.post('/links/:uuid/secrets', function (req, res) {
+app.post('/api/links/:uuid/secrets', function (req, res) {
     // TODO: don't allow secrets to be more than 1MB
 
     const uuid = req.params.uuid;
@@ -59,7 +65,7 @@ app.post('/links/:uuid/secrets', function (req, res) {
     });
 });
 
-app.get('/links/:uuid/secrets', function (req, res) {
+app.get('/api/links/:uuid/secrets', function (req, res) {
     const uuid = req.params.uuid;
     const secretsPath = 'links/' + uuid + '/secrets.txt';
 

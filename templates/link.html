@@ -1,0 +1,15 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<p>LIIIIINK! {{ uuid }}</p>
+
+<script>
+    let uuid = '{{ uuid }}';
+
+    window.onload = function () {
+        fetch('https://s3.amazonaws.com/secrets.host/links/' + uuid + '/public_key.pub').then(function(response) {
+            console.log('the pub key:', response);
+        })
+    };
+</script>
+{% endblock %}
