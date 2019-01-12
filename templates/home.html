@@ -3,21 +3,21 @@
 {% block content %}
 <div class="container mx-auto mt-6 leading-normal text-center">
     <div style="max-width: 800px;" class="mx-auto">
+        <h3 class="mb-4">Why?</h3>
+        <p class="text-sm">How often have we shared database credentials over Slack? Or sent production API keys to a developer
+        in another organization over unencrypted email? Sending sensitive data in the clear is a widely known
+        security fail, but we do it because it's convenient. This tool is an attempt to make sharing those secrets
+        in a secure way easier than before - in the hopes that we'll stop sending sensitive information over
+        insecure channels.</p>
+
+        <h3 class="mt-6 mb-4">How?</h3>
+        <p class="text-sm">When you click the button below, your web browser will generate a public and private key pair. The
+        private key is downloaded to your computer, and the public key gets stored on our servers. A unique URL is
+        generated which you can share with the person who needs to tell you a secret. On their side, the secret will
+        be encrypted with your public key. The encrypted secret is then available for you to decrypt with your
+        private key.</p>
+
         <div id="step1">
-            <h3 class="mb-4">Why?</h3>
-            <p class="text-sm">How often have we shared database credentials over Slack? Or sent production API keys to a developer
-            in another organization over unencrypted email? Sending sensitive data in the clear is a widely known
-            security fail, but we do it because it's convenient. This tool is an attempt to make sharing those secrets
-            in a secure way easier than before - in the hopes that we'll stop sending sensitive information over
-            insecure channels.</p>
-
-            <h3 class="mt-6 mb-4">How?</h3>
-            <p class="text-sm">When you click the button below, your web browser will generate a public and private key pair. The
-            private key is downloaded to your computer, and the public key gets stored on our servers. A unique URL is
-            generated which you can share with the person who needs to tell you a secret. On their side, the secret will
-            be encrypted with your public key. The encrypted secret is then available for you to decrypt with your
-            private key.</p>
-
             <form id="public-key-form" method="post">
                 <input id="submit-button"
                        type="submit"
@@ -26,7 +26,7 @@
                        style="border-color: #414667; background-color: #1D202F; color: #B2B3BA;">
             </form>
         </div>
-        <div id="step2" class="hidden">
+        <div id="step2" class="hidden mt-8">
             <p>Share the below URL with whomever wants to tell you their secrets.</p>
             <input id="unique-url" type="text" class="w-full p-4 mt-4 border outline-none text-center" style="border-color: #414667; background-color: #1D202F; color: #B2B3BA;">
         </div>
