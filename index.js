@@ -18,12 +18,26 @@ app.get('/', function (req, res) {
 
 app.get('/:uuid', function (req, res) {
     const uuid = req.params.uuid;
+    const secretsPath = 'links/' + uuid + '/secrets.txt';
 
-    res.render('link.html', {uuid: uuid});
+    s3.getObject({
+        Bucket: process.env.S3_BUCKET,
+        Key: secretsPath
+    }).promise().then((data) => {
+        console.log('Successfully retrieved secrets from S3', secretsPath);
+
+        res.render('decrypt-secrets.html', {secrets: data.Body.toString('utf-8')});
+    }).catch((error) => {
+        if (error.code !== 'NoSuchKey') {
+            console.error('Received error reading secrets from S3', error);
+        }
+
+        res.render('enter-secrets.html', {uuid: uuid});
+    });
 });
 
 app.post('/api/links', function (req, res) {
-    // TODO: ensure public key is valid
+    // TODO: ensure public key is valid and not over a few KB
 
     const uuid = uuidv4();
     const publicKey = req.body.public_key;
